@@ -17,6 +17,7 @@ public class Startup {
     private String nome;
     private String cnpj;
     private String areaAtuacao;
+    private boolean ativo = true;
 
     @ManyToOne
     @JoinColumn(name = "responsavel_id", nullable = false)
@@ -61,6 +62,12 @@ public class Startup {
 
     public void setResponsavel(Usuario responsavel) {
         this.responsavel = responsavel;
+    }
+    public boolean isAtivo() {
+        return ativo;
+    }
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override

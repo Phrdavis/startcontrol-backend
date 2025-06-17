@@ -53,4 +53,9 @@ public class StartupController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/multiplas")
+    public ResponseEntity<?> criarMultiplas(@RequestBody List<StartupDTO> startupDTOs) {
+        return startupService.criarMultiplas(startupDTOs);
+    }
+
 }

@@ -52,4 +52,18 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/autenticar")
+    public ResponseEntity<?> autenticar(@RequestBody UsuarioDTO usuarioDTO) {
+        try {
+            String token = usuarioService.authenticate(usuarioDTO);
+            return ResponseEntity.ok().body(
+                java.util.Collections.singletonMap("token", token)
+            );
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(
+                java.util.Collections.singletonMap("erro", ex.getMessage())
+            );
+        }
+    }
+
 }
