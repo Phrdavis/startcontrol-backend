@@ -48,6 +48,7 @@ public class UsuarioService {
         user.setNome(usuario.getNome());
         user.setEmail(usuario.getEmail());
         user.setTipo(usuario.getTipo());
+        user.setAtivo(true);
         Usuario savedUser = usuarioRepository.save(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
@@ -70,20 +71,41 @@ public class UsuarioService {
         if (usuario == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.singletonMap("erro", "Usuário não encontrado"));
         }
-        String senhaCriptografada = PasswordUtils.encryptPassword(usuarioDTO.getSenha());
-        usuario.setSenha(senhaCriptografada);
 
-        usuario.setNome(usuarioDTO.getNome());
-        usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setTipo(usuarioDTO.getTipo());
+        if (usuarioDTO.getNome() != null) {
+            usuario.setNome(usuarioDTO.getNome());
+        }
+        if (usuarioDTO.getEmail() != null) {
+            usuario.setEmail(usuarioDTO.getEmail());
+        }
+        if (usuarioDTO.getTipo() != null) {
+            usuario.setTipo(usuarioDTO.getTipo());
+        }
+        if (usuarioDTO.getAtivo() != null) {
+            usuario.setAtivo(usuarioDTO.getAtivo());
+        }
+        if (usuarioDTO.getSenha() != null && !usuarioDTO.getSenha().isEmpty()) {
+            String senhaCriptografada = PasswordUtils.encryptPassword(usuarioDTO.getSenha());
+            usuario.setSenha(senhaCriptografada);
+        }
+
         Usuario usuarioAtualizado = usuarioRepository.save(usuario);
         return ResponseEntity.ok(usuarioAtualizado);
     }
 
     public ResponseEntity<?> deletar(Long id) {
         if (!usuarioRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.singletonMap("erro", "Usuário não encontrado"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(java.util.Collections.singletonMap("erro", "Usuário não encontrado"));
         }
+
+        // Verifica se o usuário está vinculado como responsável em alguma startup
+        boolean isResponsavel = usuarioRepository.existsUsuarioAsResponsavelInStartup(id);
+        if (isResponsavel) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(java.util.Collections.singletonMap("erro", "Usuário está vinculado como responsável em uma startup e não pode ser deletado"));
+        }
+
         usuarioRepository.deleteById(id);
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }
@@ -92,8 +114,13 @@ public class UsuarioService {
         Usuario user_found = usuarioRepository.findByEmail(usuario.getEmail());
 
         if (user_found != null && PasswordUtils.matches(usuario.getSenha(), user_found.getSenha())) {
+
+            if(user_found.getAtivo() == false){
+                throw new RuntimeException("Usuário Inativo!");
+            }
+
             long id = user_found.getId();
-            String token = jwtUtils.generateJwtToken(usuario.getEmail(), id);
+            String token = jwtUtils.generateJwtToken(user_found);
 
             SessaoUsuario sessao = new SessaoUsuario();
             sessao.setToken(token);
@@ -118,5 +145,33 @@ public class UsuarioService {
         } else {
             throw new RuntimeException("Usuário ou senha inválidos");
         }
+    }
+
+    public ResponseEntity<?> criarMultiplos(List<UsuarioDTO> usuarios) {
+        if (usuarios == null || usuarios.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(java.util.Collections.singletonMap("erro", "Lista de usuários vazia"));
+        }
+        List<Usuario> novosUsuarios = new java.util.ArrayList<>();
+        for (UsuarioDTO dto : usuarios) {
+            if (dto.getEmail() == null || dto.getEmail().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(java.util.Collections.singletonMap("erro", "Email não informado para um dos usuários"));
+            }
+            if (usuarioRepository.findByEmail(dto.getEmail()) != null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(java.util.Collections.singletonMap("erro", "Usuário já cadastrado: " + dto.getEmail()));
+            }
+            Usuario novoUsuario = new Usuario();
+            novoUsuario.setNome(dto.getNome());
+            novoUsuario.setEmail(dto.getEmail());
+            novoUsuario.setTipo(dto.getTipo());
+            novoUsuario.setAtivo(true);
+            String senhaCriptografada = PasswordUtils.encryptPassword(dto.getSenha());
+            novoUsuario.setSenha(senhaCriptografada);
+            novosUsuarios.add(novoUsuario);
+        }
+        List<Usuario> salvos = usuarioRepository.saveAll(novosUsuarios);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvos);
     }
 }

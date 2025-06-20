@@ -19,6 +19,7 @@ public class SessaoUsuario {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuarioId;
+    @jakarta.persistence.Lob
     private String token;
     private String ip;
     private LocalDateTime dataExpiracao;

@@ -47,9 +47,8 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        usuarioService.deletar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+        return usuarioService.deletar(id);
     }
 
     @PostMapping("/autenticar")
@@ -64,6 +63,11 @@ public class UsuarioController {
                 java.util.Collections.singletonMap("erro", ex.getMessage())
             );
         }
+    }
+
+    @PostMapping("/multiplos")
+    public ResponseEntity<?> criarMultiplos(@RequestBody List<UsuarioDTO> usuarioDTOs) {
+        return usuarioService.criarMultiplos(usuarioDTOs);
     }
 
 }

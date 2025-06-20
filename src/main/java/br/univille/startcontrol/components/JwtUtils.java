@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import br.univille.startcontrol.model.Usuario;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -22,12 +23,14 @@ public class JwtUtils {
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
 
-    public String generateJwtToken(String email, long id) {
+    public String generateJwtToken(Usuario usuario) {
         SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
         return Jwts.builder()
-                .claim("id", id)
-                .setSubject(email)
+                .claim("id", usuario.getId())
+                .claim("nome", usuario.getNome())
+                .claim("email", usuario.getEmail())
+                .claim("tipo", usuario.getTipo())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS512)

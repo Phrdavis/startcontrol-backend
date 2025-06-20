@@ -10,6 +10,8 @@ public class UsuarioDTO {
 
     private String tipo;
 
+    private boolean ativo;
+
     public String getNome() {
         return nome;
     }
@@ -40,6 +42,14 @@ public class UsuarioDTO {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
 }

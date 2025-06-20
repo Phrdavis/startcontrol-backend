@@ -39,6 +39,7 @@ public class StartupService {
                         .body(java.util.Collections.singletonMap("erro", "Responsável não encontrado para uma das startups"));
             }
             Startup novaStartup = new Startup();
+            novaStartup.setId(dto.getId());
             novaStartup.setNome(dto.getNome());
             novaStartup.setCnpj(dto.getCnpj());
             novaStartup.setAreaAtuacao(dto.getAreaAtuacao());
@@ -70,7 +71,7 @@ public class StartupService {
     public ResponseEntity<?> buscarPorId(Long id) {
         Startup startup = startupRepository.findById(id).orElse(null);
         if (startup == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Startup não encontrada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.singletonMap("erro", "Startup não encontrada"));
         }
         return ResponseEntity.ok(startup);
     }

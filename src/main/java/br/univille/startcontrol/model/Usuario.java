@@ -15,6 +15,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private boolean ativo;
     private String tipo;
 
     // Getters and Setters
@@ -56,6 +57,14 @@ public class Usuario {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override
