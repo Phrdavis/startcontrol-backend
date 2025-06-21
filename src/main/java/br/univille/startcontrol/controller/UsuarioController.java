@@ -70,4 +70,9 @@ public class UsuarioController {
         return usuarioService.criarMultiplos(usuarioDTOs);
     }
 
+    @PostMapping("/trash-password-recovery")
+    public ResponseEntity<?> trashPasswordRecovery(@RequestBody UsuarioDTO usuarioDTOs) {
+        return usuarioService.trashPasswordRecovery(usuarioDTOs);
+    }
+
 }

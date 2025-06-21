@@ -174,4 +174,25 @@ public class UsuarioService {
         List<Usuario> salvos = usuarioRepository.saveAll(novosUsuarios);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvos);
     }
+
+    public ResponseEntity<?> trashPasswordRecovery(UsuarioDTO usuarioDTO) {
+        String email = usuarioDTO.getEmail();
+        String novaSenha = usuarioDTO.getSenha();
+        if (email == null || email.isEmpty() || novaSenha == null || novaSenha.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(java.util.Collections.singletonMap("erro", "Email e nova senha devem ser informados"));
+        }
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(java.util.Collections.singletonMap("erro", "E-mail não cadastrado"));
+        }
+
+        String senhaCriptografada = PasswordUtils.encryptPassword(novaSenha);
+        usuario.setSenha(senhaCriptografada);
+        usuarioRepository.save(usuario);
+
+        return ResponseEntity.ok(java.util.Collections.singletonMap("mensagem", "Senha alterada com sucesso"));
+    }
 }
