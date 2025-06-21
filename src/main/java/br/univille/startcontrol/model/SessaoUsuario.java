@@ -15,10 +15,7 @@ public class SessaoUsuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuarioId;
+    private long usuarioId;
     @jakarta.persistence.Lob
     private String token;
     private String ip;
@@ -34,12 +31,12 @@ public class SessaoUsuario {
         this.id = id;
     }
 
-    public Usuario getUsuarioId() {
+    public long getUsuarioId() {
         return usuarioId;
     }
 
     public void setUsuarioId(Usuario usuarioId) {
-        this.usuarioId = usuarioId;
+        this.usuarioId = usuarioId.getId();
     }
 
     public String getToken() {
