@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.univille.startcontrol.dto.UsuarioDTO;
+import br.univille.startcontrol.model.Startup;
 import br.univille.startcontrol.model.Usuario;
 import br.univille.startcontrol.service.UsuarioService;
 
@@ -37,8 +39,14 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> buscarTodos() {
-        return ResponseEntity.ok(usuarioService.buscarTodos());
+    public ResponseEntity<List<Usuario>> buscarTodos(@RequestParam(required = false) Long usuarioId) {
+        List<Usuario> usaurios;
+        if (usuarioId != null) {
+            usaurios = usuarioService.buscarTodosPorUsuario(usuarioId);
+        } else {
+            usaurios = usuarioService.buscarTodos();
+        }
+        return ResponseEntity.ok(usaurios);
     }
 
     @PutMapping("/{id}")

@@ -14,8 +14,10 @@ import br.univille.startcontrol.components.JwtUtils;
 import br.univille.startcontrol.components.PasswordUtils;
 import br.univille.startcontrol.dto.UsuarioDTO;
 import br.univille.startcontrol.model.SessaoUsuario;
+import br.univille.startcontrol.model.Startup;
 import br.univille.startcontrol.model.Usuario;
 import br.univille.startcontrol.repository.SessaoUsuarioRepository;
+import br.univille.startcontrol.repository.StartupRepository;
 import br.univille.startcontrol.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -23,13 +25,15 @@ import jakarta.servlet.http.HttpServletRequest;
 public class UsuarioService {
     
     private final UsuarioRepository usuarioRepository;
+    private final StartupRepository startupRepository;
     private final SessaoUsuarioRepository sessaoUsuarioRepository;
 
     @Autowired
     private JwtUtils jwtUtils;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, SessaoUsuarioRepository sessaoUsuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, SessaoUsuarioRepository sessaoUsuarioRepository, StartupRepository startupRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.startupRepository = startupRepository;
         this.sessaoUsuarioRepository = sessaoUsuarioRepository;
     }
 
@@ -64,6 +68,18 @@ public class UsuarioService {
 
     public List<Usuario> buscarTodos() {
         return usuarioRepository.findAll();
+    }
+
+    public List<Usuario> buscarTodosPorUsuario(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        List<Usuario> usuarios;
+        if (usuario != null && usuario.getTipo() != null && !usuario.getTipo().equals("ADMIN")) {
+            usuarios = startupRepository.findUsuariosByResponsavel(usuario);
+            usuarios.addAll(startupRepository.findUsuariosAssociadosMesmasStartups(usuario));
+        }else{
+            usuarios = usuarioRepository.findAll();
+        }
+        return usuarios;
     }
 
     public ResponseEntity<?> atualizar(Long id, UsuarioDTO usuarioDTO) {
