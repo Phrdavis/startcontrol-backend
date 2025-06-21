@@ -86,6 +86,15 @@ public class StartupService {
         return startupRepository.findAll();
     }
 
+    public List<Startup> buscarTodosPorUsuario(Long usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        if (usuario == null) {
+            return java.util.Collections.emptyList();
+        }
+        List<Startup> startups = startupRepository.findByResponsavel(usuario);
+        return startupRepository.findAll();
+    }
+
     public ResponseEntity<?> buscarUsersStartup(Long id){
         Startup startup = startupRepository.findById(id).orElse(null);
         if (startup == null) {

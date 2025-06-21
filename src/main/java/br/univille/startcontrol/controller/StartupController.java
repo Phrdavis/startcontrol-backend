@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.univille.startcontrol.dto.StartupDTO;
@@ -37,8 +38,13 @@ public class StartupController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Startup>> buscarTodos() {
-        List<Startup> startups = startupService.buscarTodos();
+    public ResponseEntity<List<Startup>> buscarTodos(@RequestParam(required = false) Long usuarioId) {
+        List<Startup> startups;
+        if (usuarioId != null) {
+            startups = startupService.buscarTodosPorUsuario(usuarioId);
+        } else {
+            startups = startupService.buscarTodos();
+        }
         return ResponseEntity.ok(startups);
     }
 
