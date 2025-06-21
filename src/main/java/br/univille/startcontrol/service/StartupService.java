@@ -1,6 +1,8 @@
 package br.univille.startcontrol.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import br.univille.startcontrol.dto.StartupDTO;
 import br.univille.startcontrol.model.Startup;
+import br.univille.startcontrol.model.Usuario;
+import br.univille.startcontrol.repository.AssociacaoUsuarioStartupRepository;
 import br.univille.startcontrol.repository.StartupRepository;
 import br.univille.startcontrol.repository.UsuarioRepository;
 
@@ -16,10 +20,12 @@ public class StartupService {
 
     private final StartupRepository startupRepository;
     private final UsuarioRepository usuarioRepository;
+    private final AssociacaoUsuarioStartupRepository associacaoUsuarioStartupRepository;
 
-    public StartupService(StartupRepository startupRepository, UsuarioRepository usuarioRepository) {
+    public StartupService(StartupRepository startupRepository, UsuarioRepository usuarioRepository, AssociacaoUsuarioStartupRepository associacaoUsuarioStartupRepository) {
         this.startupRepository = startupRepository;
         this.usuarioRepository = usuarioRepository;
+        this.associacaoUsuarioStartupRepository = associacaoUsuarioStartupRepository;
     }
 
     public ResponseEntity<?> criarMultiplas(List<StartupDTO> startups) {
@@ -78,6 +84,18 @@ public class StartupService {
 
     public List<Startup> buscarTodos() {
         return startupRepository.findAll();
+    }
+
+    public ResponseEntity<?> buscarUsersStartup(Long id){
+        Startup startup = startupRepository.findById(id).orElse(null);
+        if (startup == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.singletonMap("erro", "Startup não encontrada"));
+        }
+
+        List<Object[]> listUsers = associacaoUsuarioStartupRepository.buscarUsersStartup(id);
+
+        return ResponseEntity.ok(listUsers);
+
     }
 
     public ResponseEntity<?> atualizar(Long id, StartupDTO startupDTO) {

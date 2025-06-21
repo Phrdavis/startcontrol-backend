@@ -42,6 +42,11 @@ public class StartupController {
         return ResponseEntity.ok(startups);
     }
 
+    @GetMapping("/usuarios/{id}")
+    public ResponseEntity<?> buscarUsersStartup(@PathVariable Long id) {
+        return startupService.buscarUsersStartup(id);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody StartupDTO startupDTO) {
         return startupService.atualizar(id, startupDTO);

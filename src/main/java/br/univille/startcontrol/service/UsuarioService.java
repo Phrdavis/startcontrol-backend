@@ -106,6 +106,13 @@ public class UsuarioService {
                     .body(java.util.Collections.singletonMap("erro", "Usuário está vinculado como responsável em uma startup e não pode ser deletado"));
         }
 
+        // Verifica se o usuário está vinculado em alguma associação
+        boolean isAssociado = usuarioRepository.existsUsuarioAsAssociadoInAssociacao(id);
+        if (isAssociado) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(java.util.Collections.singletonMap("erro", "Usuário está vinculado em uma associação e não pode ser deletado"));
+        }
+
         usuarioRepository.deleteById(id);
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }
