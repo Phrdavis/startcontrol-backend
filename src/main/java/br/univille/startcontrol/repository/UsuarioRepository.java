@@ -20,4 +20,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM AssociacaoUsuarioStartup a WHERE a.usuarioId.id = :id")
     Boolean existsUsuarioAsAssociadoInAssociacao(@Param("id") long id);
 
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Projeto p WHERE p.responsavel.id = :id")
+    Boolean existsUsuarioAsResponsavelInProjeto(@Param("id") long id);
+
 } 

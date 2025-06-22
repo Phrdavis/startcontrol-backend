@@ -21,6 +21,10 @@ public class Projeto {
     @JoinColumn(name = "responsavel_id", nullable = false)
     private Usuario responsavel;
 
+    @ManyToOne
+    @JoinColumn(name = "startup_id", nullable = true)
+    private Startup startup;
+
     private String status;
 
     public Long getId() {
@@ -53,6 +57,14 @@ public class Projeto {
 
     public void setResponsavel(Usuario responsavel) {
         this.responsavel = responsavel;
+    }
+
+    public Startup getStartup(){
+        return startup;
+    }
+
+    public void setStartup(Startup startup){
+        this.startup = startup;
     }
 
     public String getStatus() {

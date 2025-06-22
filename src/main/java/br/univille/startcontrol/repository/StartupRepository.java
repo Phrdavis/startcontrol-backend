@@ -21,4 +21,7 @@ public interface StartupRepository extends JpaRepository<Startup, Long> {
     @Query("SELECT DISTINCT aus2.usuarioId FROM AssociacaoUsuarioStartup aus1 JOIN AssociacaoUsuarioStartup aus2 ON aus1.startupId = aus2.startupId WHERE aus1.usuarioId = :usuarioId")
     List<Usuario> findUsuariosAssociadosMesmasStartups(@Param("usuarioId") Usuario usuarioId);
 
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Projeto p WHERE p.startup.id = :id")
+    Boolean existsStartupVinculadaProjeto(@Param("id") long id);
+
 }

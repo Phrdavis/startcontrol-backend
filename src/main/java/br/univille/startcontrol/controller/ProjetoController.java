@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import br.univille.startcontrol.dto.ProjetoDTO;
+import br.univille.startcontrol.dto.StartupDTO;
 import br.univille.startcontrol.model.Projeto;
 import br.univille.startcontrol.service.ProjetoService;
 
@@ -41,5 +42,10 @@ public class ProjetoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         return projetoService.deletar(id);
+    }
+    
+    @PostMapping("/multiplos")
+    public ResponseEntity<?> criarMultiplos(@RequestBody List<ProjetoDTO> projetosDTO) {
+        return projetoService.criarMultiplos(projetosDTO);
     }
 }

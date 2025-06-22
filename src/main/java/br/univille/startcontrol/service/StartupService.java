@@ -125,6 +125,13 @@ public class StartupService {
         if (!startupRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.singletonMap("erro", "Startup não encontrada"));
         }
+
+        boolean isStartupVinculadaProjeto = startupRepository.existsStartupVinculadaProjeto(id);
+        if (isStartupVinculadaProjeto) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(java.util.Collections.singletonMap("erro", "Startup está vinculada a um projeto e não pode ser deletada"));
+        }
+
         startupRepository.deleteById(id);
         return ResponseEntity.ok("Startup deletada com sucesso");
     }

@@ -59,9 +59,8 @@ public class StartupController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        startupService.deletar(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+        return startupService.deletar(id);
     }
 
     @PostMapping("/multiplas")

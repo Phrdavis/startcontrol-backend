@@ -129,6 +129,12 @@ public class UsuarioService {
                     .body(java.util.Collections.singletonMap("erro", "Usuário está vinculado em uma associação e não pode ser deletado"));
         }
 
+        boolean isResponsavelProjeto = usuarioRepository.existsUsuarioAsResponsavelInProjeto(id);
+        if (isResponsavelProjeto) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(java.util.Collections.singletonMap("erro", "Usuário está vinculado como responsável em um projeto e não pode ser deletado"));
+        }
+
         usuarioRepository.deleteById(id);
         return ResponseEntity.ok("Usuário deletado com sucesso");
     }

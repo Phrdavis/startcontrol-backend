@@ -1,5 +1,6 @@
 package br.univille.startcontrol.dto;
 
+import br.univille.startcontrol.model.Startup;
 import br.univille.startcontrol.model.Usuario;
 
 public class ProjetoDTO {
@@ -7,6 +8,7 @@ public class ProjetoDTO {
     private String nome;
     private String descricao;
     private Usuario responsavel;
+    private Startup startup;
     private String status;
 
     public String getNome() {
@@ -33,6 +35,14 @@ public class ProjetoDTO {
         this.responsavel = responsavel;
     }
 
+    public Startup getStartup() {
+        return startup;
+    }
+
+    public void setStartup(Startup startup) {
+        this.startup = startup;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -47,6 +57,7 @@ public class ProjetoDTO {
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", responsavel=" + responsavel +
+                ", startup=" + startup +
                 ", status='" + status + '\'' +
                 '}';
     }
