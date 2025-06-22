@@ -37,6 +37,15 @@ A API do StartControl fornece endpoints RESTful para gerenciar startups, equipes
 4. **Documentação dos Endpoints:**
     - Acesse `/swagger-ui/index.html` após iniciar o servidor para visualizar a documentação Swagger. 📚
 
+## 🧪 Testando o Sistema
+
+Para testar o sistema, utilize as seguintes credenciais de acesso:
+
+- **E-mail:** `admin@startcontrol.com`
+- **Senha:** `admin123`
+
+Essas credenciais permitem acessar as funcionalidades administrativas e explorar os recursos da API.
+
 ## 🤝 Contribuição
 
 Sugestões e melhorias para a API são bem-vindas! Abra uma issue ou envie um pull request.
