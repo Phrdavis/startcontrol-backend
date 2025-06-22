@@ -1,7 +1,6 @@
 # 🚀 API do StartControl
 
-A API do StartControl fornece endpoints RESTful para gerenciar startups, equipes, tarefas e métricas de desempenho. Ela permite integração com sistemas externos e facilita o desenvolvimento de aplicações clientes.
-
+A API do StartControl fornece endpoints RESTful para gerenciar startups, equipes, tarefas e métricas de desempenho. 
 ## 🌟 Principais Endpoints
 
 - **Startups:** Cadastro, listagem, atualização e remoção de startups.
