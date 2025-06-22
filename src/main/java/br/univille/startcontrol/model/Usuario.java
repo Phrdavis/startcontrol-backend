@@ -18,7 +18,6 @@ public class Usuario {
     private boolean ativo;
     private String tipo;
 
-    // Getters and Setters
     public long getId() {
         return id;
     }
