@@ -2,14 +2,11 @@ package br.univille.startcontrol.service;
 
 import java.util.List;
 
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.univille.startcontrol.dto.ProjetoDTO;
-import br.univille.startcontrol.dto.ProjetoDTO;
-import br.univille.startcontrol.model.Projeto;
 import br.univille.startcontrol.model.Projeto;
 import br.univille.startcontrol.repository.ProjetoRepository;
 import br.univille.startcontrol.repository.StartupRepository;

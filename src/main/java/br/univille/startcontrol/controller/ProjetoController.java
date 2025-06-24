@@ -1,11 +1,9 @@
 package br.univille.startcontrol.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import br.univille.startcontrol.dto.ProjetoDTO;
-import br.univille.startcontrol.dto.StartupDTO;
 import br.univille.startcontrol.model.Projeto;
 import br.univille.startcontrol.service.ProjetoService;
 

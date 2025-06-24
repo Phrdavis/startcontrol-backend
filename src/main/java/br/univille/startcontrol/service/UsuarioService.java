@@ -14,7 +14,6 @@ import br.univille.startcontrol.components.JwtUtils;
 import br.univille.startcontrol.components.PasswordUtils;
 import br.univille.startcontrol.dto.UsuarioDTO;
 import br.univille.startcontrol.model.SessaoUsuario;
-import br.univille.startcontrol.model.Startup;
 import br.univille.startcontrol.model.Usuario;
 import br.univille.startcontrol.repository.SessaoUsuarioRepository;
 import br.univille.startcontrol.repository.StartupRepository;
@@ -148,7 +147,6 @@ public class UsuarioService {
                 throw new RuntimeException("Usuário Inativo!");
             }
 
-            long id = user_found.getId();
             String token = jwtUtils.generateJwtToken(user_found);
 
             SessaoUsuario sessao = new SessaoUsuario();

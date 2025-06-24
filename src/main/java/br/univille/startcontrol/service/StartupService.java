@@ -10,6 +10,7 @@ import br.univille.startcontrol.dto.StartupDTO;
 import br.univille.startcontrol.model.Startup;
 import br.univille.startcontrol.model.Usuario;
 import br.univille.startcontrol.repository.AssociacaoUsuarioStartupRepository;
+import br.univille.startcontrol.repository.IncubadoraRepository;
 import br.univille.startcontrol.repository.StartupRepository;
 import br.univille.startcontrol.repository.UsuarioRepository;
 
@@ -17,11 +18,13 @@ import br.univille.startcontrol.repository.UsuarioRepository;
 public class StartupService {
 
     private final StartupRepository startupRepository;
+    private final IncubadoraRepository incubadoraRepository;
     private final UsuarioRepository usuarioRepository;
     private final AssociacaoUsuarioStartupRepository associacaoUsuarioStartupRepository;
 
-    public StartupService(StartupRepository startupRepository, UsuarioRepository usuarioRepository, AssociacaoUsuarioStartupRepository associacaoUsuarioStartupRepository) {
+    public StartupService(StartupRepository startupRepository, UsuarioRepository usuarioRepository, AssociacaoUsuarioStartupRepository associacaoUsuarioStartupRepository, IncubadoraRepository incubadoraRepository) {
         this.startupRepository = startupRepository;
+        this.incubadoraRepository = incubadoraRepository;
         this.usuarioRepository = usuarioRepository;
         this.associacaoUsuarioStartupRepository = associacaoUsuarioStartupRepository;
     }
@@ -42,12 +45,19 @@ public class StartupService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(java.util.Collections.singletonMap("erro", "Responsável não encontrado para uma das startups"));
             }
+
+            var incubadora = incubadoraRepository.findById(dto.getIncubadora().getId()).orElse(null);
+            if (incubadora == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(java.util.Collections.singletonMap("erro", "Incubadora não encontrado para uma das startups"));
+            }
             Startup novaStartup = new Startup();
             novaStartup.setId(dto.getId());
             novaStartup.setNome(dto.getNome());
             novaStartup.setCnpj(dto.getCnpj());
             novaStartup.setAreaAtuacao(dto.getAreaAtuacao());
             novaStartup.setResponsavel(responsavel);
+            novaStartup.setIncubadora(incubadora);
             novaStartup.setAtivo(true);
             novasStartups.add(novaStartup);
         }

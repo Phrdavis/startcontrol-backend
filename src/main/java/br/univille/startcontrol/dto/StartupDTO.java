@@ -1,5 +1,6 @@
 package br.univille.startcontrol.dto;
 
+import br.univille.startcontrol.model.Incubadora;
 import br.univille.startcontrol.model.Usuario;
 
 public class StartupDTO {
@@ -13,6 +14,8 @@ public class StartupDTO {
     private String areaAtuacao;
     
     private Usuario responsavel;
+
+    private Incubadora incubadora;
 
     private boolean ativo = true;
 
@@ -55,6 +58,14 @@ public class StartupDTO {
 
     public void setResponsavel(Usuario responsavel) {
         this.responsavel = responsavel;
+    }
+
+    public Incubadora getIncubadora() {
+        return incubadora;
+    }
+
+    public void setIncubadora(Incubadora incubadora) {
+        this.incubadora = incubadora;
     }
 
     public boolean isAtivo() {

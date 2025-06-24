@@ -23,6 +23,10 @@ public class Startup {
     @JoinColumn(name = "responsavel_id", nullable = false)
     private Usuario responsavel;
 
+    @ManyToOne
+    @JoinColumn(name = "incubadora_id", nullable = false)
+    private Incubadora incubadora;
+
     // Getters and Setters
     public long getId() {
         return id;
@@ -63,6 +67,15 @@ public class Startup {
     public void setResponsavel(Usuario responsavel) {
         this.responsavel = responsavel;
     }
+
+    public Incubadora getIncubadora() {
+        return incubadora;
+    }
+
+    public void setIncubadora(Incubadora incubadora) {
+        this.incubadora = incubadora;
+    }
+
     public boolean isAtivo() {
         return ativo;
     }
@@ -77,7 +90,9 @@ public class Startup {
                 ", nome='" + nome + '\'' +
                 ", cnpj='" + cnpj + '\'' +
                 ", areaAtuacao='" + areaAtuacao + '\'' +
-                ", responsavel=" + responsavel +
+                ", responsavel=" + responsavel + '\'' +
+                ", incubadora=" + incubadora +
+                ", ativo=" + ativo +
                 '}';
     }
 
